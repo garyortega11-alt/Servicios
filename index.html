@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gary Ortega | Servicios Digitales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #000000; /* Negro */
+            --secondary-color: #28a745; /* Verde para acentos */
+            --background-light: #f8f9fa;
+            --text-dark: #343a40;
+            --text-light: #ffffff;
+            --card-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base y Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; 
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--background-light);
+            overflow-x: hidden; 
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ----------------------- PRELOADER ----------------------- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader-text {
+            color: var(--text-light);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 5px;
+            background-color: #333;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--secondary-color);
+            transition: width 0.1s linear;
+        }
+
+        /* ----------------------- HEADER / NAVBAR ----------------------- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: transparent; 
+            box-shadow: none;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Estilo que se aplica al hacer scroll */
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo (oculto por defecto) */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-decoration: none;
+            color: var(--primary-color);
+            opacity: 0; 
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Logo (visible al hacer scroll) */
+        .navbar.scrolled .logo {
+            opacity: 1; 
+            color: var(--primary-color); 
+        }
+        
+        /* Color inicial del botón de hamburguesa (blanco) */
+        .menu-toggle {
+            font-size: 1.8rem;
+            color: var(--text-light); 
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+        
+        /* Color del botón de hamburguesa al hacer scroll (negro) */
+        .navbar.scrolled .menu-toggle {
+            color: var(--primary-color); 
+        }
+
+        /* Añadimos transición al ícono para el efecto suave */
+        .menu-toggle .fas {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-light); 
+            font-weight: 500;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+        
+        /* Color de los enlaces al hacer scroll (negro) */
+        .navbar.scrolled .nav-menu a {
+            color: var(--primary-color); 
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* ----------------------- HERO SECTION ----------------------- */
+        .hero {
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #343a40 100%); 
+            color: var(--text-light);
+            text-align: center;
+            padding-top: 0; 
+        }
+
+        .hero h1 {
+            font-size: 4.5rem; 
+            font-weight: 900; 
+            line-height: 1; 
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hero .changing-text {
+            font-size: 2.2rem; 
+            font-weight: 400;
+        }
+
+        #service-output {
+            font-weight: 700;
+            color: var(--secondary-color); 
+            display: block; 
+            margin-top: 10px;
+            animation: fadeInOut 3s infinite;
+            font-size: 1.1em; 
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(-10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; }
+        }
+
+        /* ----------------------- MAIN CONTENT ----------------------- */
+        .main-content-section {
+            padding: 60px 0;
+        }
+
+        .services-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color); 
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .service-cards {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap; 
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--text-light);
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            flex: 1 1 30%; 
+            min-width: 300px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card.featured {
+            border: 3px solid var(--secondary-color);
+            transform: scale(1.03); 
+        }
+        .card.featured:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            color: var(--primary-color); 
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        /* Estilos específicos para la tabla del paquete */
+        .package-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .package-table th, .package-table td {
+            padding: 10px 0;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .package-table th {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .package-table .total-row th, .package-table .total-row td {
+            border-top: 2px solid var(--secondary-color);
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+        .package-detail {
+            font-size: 0.8rem;
+            color: #6c757d;
+            display: block;
+            margin-top: 3px;
+        }
+        
+        .card h4 { margin-top: 20px; color: var(--text-dark); font-weight: 700; }
+        .card ul { list-style: none; padding: 0; margin-top: 15px; }
+        .card li { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #e0e0e0; }
+        .service-name { flex-grow: 1; font-weight: 400; }
+        .service-price { font-weight: 900; color: var(--secondary-color); font-size: 1.2rem; margin-left: 15px; }
+        .service-detail { font-size: 0.8rem; color: #6c757d; margin-left: 10px; text-align: right; }
+        .consult-price { background-color: var(--background-light); padding: 15px; border-radius: 5px; text-align: center; font-weight: 700; color: var(--primary-color); border: 2px solid var(--primary-color); margin-top: 20px; }
+        #contacto { text-align: center; padding: 60px 20px; margin-top: 60px; margin-bottom: 40px; background-color: var(--primary-color); color: var(--text-light); border-radius: 10px; }
+        #contacto p { font-size: 1.5rem; margin-bottom: 20px; font-weight: 300; }
+        
+        .cta-button { 
+            display: inline-block; 
+            background-color: var(--secondary-color); 
+            color: var(--text-light); 
+            text-decoration: none; 
+            padding: 12px 30px; 
+            border-radius: 50px; 
+            font-weight: 700; 
+            letter-spacing: 1px; 
+            transition: background-color 0.3s ease; 
+        }
+        .cta-button:hover { background-color: #1e7e34; }
+        
+        footer { text-align: center; padding: 20px 0; border-top: 1px solid #dee2e6; color: #6c757d; font-size: 0.9rem; }
+        
+        /* ----------------------- RESPONSIVE DESIGN ----------------------- */
+        @media (max-width: 1024px) {
+            .card { flex: 1 1 45%; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; letter-spacing: 1px; }
+            .hero .changing-text { font-size: 1.8rem; }
+            
+            /* Navbar Móvil */
+            .nav-menu { 
+                display: flex; 
+                flex-direction: column;
+                position: absolute;
+                top: 70px; 
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out; 
+            }
+
+            /* Mostrar menú al activar: le damos una altura suficiente para que se vea */
+            .nav-menu.active { 
+                max-height: 300px; 
+                padding: 20px 0; 
+            }
+            /* Quitar el padding del menu base para que no interfiera */
+            .nav-menu:not(.active) {
+                padding: 0;
+            }
+
+            .nav-menu a {
+                margin: 10px 20px;
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+                color: var(--primary-color); 
+            }
+
+            .menu-toggle { display: block; }
+
+            .service-cards { flex-direction: column; gap: 20px; }
+            .card { flex: 1 1 100%; min-width: auto; }
+            .card li { flex-wrap: wrap; }
+            .service-price { margin-left: 0; order: 3; width: 100%; text-align: right; }
+        }
+    </style>
+    </head>
+<body id="top">
+    <div id="preloader">
+        <div class="loader-text">Cargando <span id="load-percent">0</span>%</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+    </div>
+    
+    <header class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#top" class="logo">Gary Ortega</a>
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Gary Ortega</h1>
+            <p class="changing-text">
+                Servicios que transforman:
+                <span id="service-output">Publicidad</span>
+            </p>
+        </div>
+    </section>
+
+    <main class="main-content-section">
+        <div class="container">
+            
+            <section class="services-section" id="servicios">
+                <h2>Nuestros Servicios y Precios</h2>
+                
+                <div class="service-cards">
+                    
+                    <article class="card audio-video">
+                        <h3>🎬 Audio y Video Unitario</h3>
+                        <ul>
+                            <li>
+                                <span class="service-name">Edición de video corto para redes sociales</span>
+                                <span class="service-detail">(Máx. 1 min. Incluye voz y música)</span>
+                                <span class="service-price">25$</span>
+                            </li>
+                            <li>
+                                <span class="service-name">Voz grabada y editada adicional (solo audio)</span>
+                                <span class="service-price">10$</span>
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article class="card graphic-web">
+                        <h3>🎨 Diseño Gráfico y Web</h3>
+                        
+                        <h4>Banner Publicidad para Redes Sociales</h4>
+                        <ul>
+                            <li>
+                                <span class="service-name">Tamaño 3:4 (Instagram, Facebook)</span>
+                                <span class="service-price">10$</span>
+                            </li>
+                            <li>
+                                <span class="service-name">Tamaño pantalla completa (Estado/Stories)</span>
+                                <span class="service-price">12$</span>
+                            </li>
+                        </ul>
+
+                        <h4>Diseño de Páginas Web</h4>
+                        <p class="consult-price">Diseño moderno y profesional. <br> **Consultar precio** ✉️</p>
+                    </article>
+
+                    <article class="card featured package">
+                        <h3>⭐ Estrategia Digital Mensual</h3>
+                        <p style="font-weight: 700; margin-bottom: 15px; color: var(--secondary-color);">¡El paquete más recomendado para tu crecimiento!</p>
+
+                        <table class="package-table">
+                            <thead>
+                                <tr>
+                                    <th>Contenido</th>
+                                    <th style="text-align: right;">Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Videos Cortos
+                                        <span class="package-detail">Incluye edición, musicalización y Voz Narrada (opcional).</span>
+                                    </td>
+                                    <td style="text-align: right;">8</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Banners Publicitarios
+                                        <span class="package-detail">Diseños para Feed (3:4) y Stories.</span>
+                                    </td>
+                                    <td style="text-align: right;">8</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="padding-top: 15px;">
+                                        <strong style="color: var(--primary-color);">Estrategia:</strong> 4 publicaciones por semana.
+                                    </td>
+                                </tr>
+                                <tr class="total-row">
+                                    <th>Inversión Mensual:</th>
+                                    <td style="text-align: right;">216$</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </article>
+                    
+                </div>
+            </section>
+            
+            <section id="contacto">
+                <p>¿Listo para llevar tu proyecto al siguiente nivel?</p>
+                <a 
+                    href="https://wa.me/584269133382?text=Hola%20Gary,%20me%20interesan%20tus%20servicios%20digitales%20(audio,%20video,%20web%20y%20paquetes)." 
+                    class="cta-button" 
+                    target="_blank"
+                >
+                    Contactar por WhatsApp
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Gary Ortega. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Efecto Preloader (Carga más lenta: 120ms)
+        document.addEventListener("DOMContentLoaded", function() {
+            const preloader = document.getElementById('preloader');
+            const loaderProgress = document.getElementById('loader-progress');
+            const loadPercent = document.getElementById('load-percent');
+            let percent = 0;
+
+            const interval = setInterval(() => {
+                percent += 10;
+                if (percent > 100) {
+                    percent = 100;
+                }
+                
+                loaderProgress.style.width = percent + '%';
+                loadPercent.textContent = percent;
+
+                if (percent === 100) {
+                    clearInterval(interval);
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        document.body.style.overflow = 'auto'; 
+                    }, 500); 
+                }
+            }, 120); 
+            
+            document.body.style.overflow = 'hidden'; 
+        });
+
+        // 2. Control de la Barra de Navegación al hacer Scroll
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 3. Efecto de Texto Cambiante
+        const services = ["Publicidad", "Edición de Audio y Video", "Creación de Página Web"];
+        let index = 0;
+        const serviceOutput = document.getElementById('service-output');
+
+        function changeServiceText() {
+            serviceOutput.textContent = services[index];
+            index = (index + 1) % services.length;
+        }
+
+        changeServiceText(); 
+        setInterval(changeServiceText, 3000); 
+
+
+        // 4. Menú Hamburguesa (Responsive) - CORRECCIÓN APLICADA AQUÍ
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const menuIcon = menuToggle.querySelector('.fas'); // Seleccionamos el ícono dentro del botón
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+
+            // **CORRECCIÓN:** Alternamos las clases del ícono para el efecto 'X'
+            if (navMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times'); // fa-times es el ícono de la 'X'
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Cierra el menú si se hace clic en un enlace (solo en móvil)
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    // Reiniciar el ícono al cerrar
+                    menuIcon.classList.remove('fa-times');
+                    menuIcon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
